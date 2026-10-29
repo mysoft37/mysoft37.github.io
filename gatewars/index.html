@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!-- Kapı Savaşı / Gate Wars yönlendirme sayfası. Instagram hikâye bağlantısı buraya verilir: Instagram'ın uygulama içi
+     tarayıcısı play.google.com'u Play uygulamasına devredemiyor, ama normal sayfayı açar; düğme intent:// ile Play'i açar.
+     Kampanya etiketi (referrer) Play Console > Kullanıcı edinme raporunda kaynak olarak görünür. ?src=instagram gibi
+     bir parametreyle farklı kaynaklar ayrı izlenebilir. -->
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kapı Savaşı – Gate Wars</title>
+<meta name="description" content="Doğru kapıyı seç, ordunu büyüt, zombi sürülerini 100 bölümde dağıt! Google Play'de ücretsiz.">
+<meta property="og:title" content="Kapı Savaşı – Gate Wars">
+<meta property="og:description" content="Doğru kapıyı seç, ordunu büyüt, zombileri dağıt! Google Play'de ücretsiz.">
+<meta property="og:image" content="https://mysoft37.github.io/gatewars/feature-tr.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.png">
+<style>
+  :root { --bg: #16202E; --panel: #1E2A3C; --text: #F4F7FF; --dim: #A4B2C8; --gold: #FFC93C; --green: #4CD964; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 480px; margin: 0 auto; padding: 28px 16px 40px; text-align: center; }
+  .icon { width: 112px; height: 112px; border-radius: 26px; box-shadow: 0 8px 24px rgba(0,0,0,.45); }
+  h1 { font-size: 30px; margin: 18px 0 6px; font-weight: 900; letter-spacing: .5px; }
+  .tag { color: var(--gold); font-weight: 700; font-size: 18px; margin: 0 0 6px; }
+  .sub { color: var(--dim); margin: 0 0 22px; }
+  .play { display: block; width: 100%; padding: 18px; border-radius: 18px; background: var(--green); color: #0B2A12;
+          font-size: 20px; font-weight: 900; text-decoration: none; box-shadow: 0 5px 0 #2E8F45; }
+  .play:active { transform: translateY(3px); box-shadow: 0 2px 0 #2E8F45; }
+  .alt { display: inline-block; margin-top: 14px; color: var(--dim); font-size: 14px; }
+  .shot { width: 72%; margin-top: 26px; border-radius: 22px; border: 3px solid rgba(255,255,255,.85); }
+  .note { color: var(--dim); font-size: 13px; margin-top: 18px; }
+  footer { margin-top: 26px; font-size: 13px; }
+  footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+<main>
+  <img class="icon" src="icon.png" alt="">
+  <h1 id="title">KAPI SAVAŞI</h1>
+  <p class="tag" id="tag">Doğru kapıyı seç, ordunu büyüt!</p>
+  <p class="sub" id="sub">100 bölüm · 10 bölge · zombi boss'ları · ücretsiz</p>
+  <a class="play" id="play" href="https://play.google.com/store/apps/details?id=com.mysoft37.gatewars">▶ Google Play'den indir</a>
+  <a class="alt" id="alt" href="https://play.google.com/store/apps/details?id=com.mysoft37.gatewars">Açılmazsa buraya dokun</a>
+  <p class="note" id="note" hidden>Oyun şimdilik yalnızca Android'de var.</p>
+  <img class="shot" id="shot" src="shot-tr.jpg" alt="">
+  <footer><a href="privacy.html" id="privacy">Gizlilik politikası</a> · MySoft37</footer>
+</main>
+<script>
+  // Kaynak etiketi: ?src=instagram (varsayılan) → Play'e utm_source olarak gider.
+  var params = new URLSearchParams(location.search);
+  var src = (params.get('src') || 'instagram').replace(/[^a-z0-9_-]/gi, '').slice(0, 30) || 'instagram';
+  var referrer = encodeURIComponent('utm_source=' + src + '&utm_medium=social&utm_campaign=shorts');
+  var https = 'https://play.google.com/store/apps/details?id=com.mysoft37.gatewars&referrer=' + referrer;
+  // Uygulama içi tarayıcılarda (Instagram, Facebook) Play uygulamasını doğrudan açan bağlantı; açamazsa https'e düşer.
+  var intent = 'intent://details?id=com.mysoft37.gatewars&referrer=' + referrer +
+    '#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=' + encodeURIComponent(https) + ';end';
+  var android = /android/i.test(navigator.userAgent);
+  var play = document.getElementById('play');
+  play.href = android ? intent : https;
+  document.getElementById('alt').href = https;
+  if (!android) document.getElementById('note').hidden = false;
+
+  // Dil: Türkçe değilse İngilizce
+  if (!/^tr/i.test(navigator.language || '')) {
+    document.documentElement.lang = 'en';
+    document.title = 'Gate Wars – Zombie Army Run';
+    document.getElementById('title').textContent = 'GATE WARS';
+    document.getElementById('tag').textContent = 'Pick the right gate, grow your army!';
+    document.getElementById('sub').textContent = '100 levels · 10 regions · zombie bosses · free';
+    play.textContent = '▶ Get it on Google Play';
+    document.getElementById('alt').textContent = "Doesn't open? Tap here";
+    document.getElementById('note').textContent = 'Available on Android only for now.';
+    document.getElementById('shot').src = 'shot-en.jpg';
+    document.getElementById('privacy').textContent = 'Privacy policy';
+  }
+</script>
+</body>
+</html>
